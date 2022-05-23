@@ -12,8 +12,9 @@ console.log(text);
 console.log(text.trim()); // no change, as it only removes leading and trailing white space
 console.log(text.startsWith('M')); // true
 console.log(text.startsWith('m')); // false - case sensitive
-console.log(text);
-console.log(text);
+console.log(text.includes('da')); // true
+console.log(text.slice(0, 3)); // Mat
+console.log(text.slice(-2)); // rd
 
 // const person = {
 //   name: 'Matthew', //property
