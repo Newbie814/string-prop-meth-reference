@@ -191,3 +191,146 @@ function convertToRoman(num) {
 
 let converted = convertToRoman(189);
 console.log(converted);
+
+function palindrome(str) {
+  const regex = /[^A-Za-z0-9]/g;
+  const newString = str.replace(regex, '').toLowerCase();
+  const newStrRev = newString.split('').reverse().join('');
+  if (newString === newStrRev) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+let resultMod = palindrome('My age is 0, 0 si ega ym.');
+console.log(resultMod);
+
+// const currencyUnit = {
+//   PENNY: 1,
+//   NICKEL: 5,
+//   DIME: 10,
+//   QUARTER: 25,
+//   ONE: 100,
+//   FIVE: 500,
+//   TEN: 1000,
+//   TWENTY: 2000,
+//   'ONE HUNDRED': 10000,
+// };
+
+// function checkCashRegister(price, cash, cid) {
+//   let change = cash * 100 - price * 100;
+//   let cidTotal = 0;
+//   for (let currType of cid) {
+//     cidTotal += currType[1] * 100;
+//   }
+//   if (cidTotal < change) {
+//     return { status: 'INSUFFICIENT_FUNDS', change: [] };
+//   } else if (cidTotal === change) {
+//     return { status: 'CLOSED', change: cid };
+//   } else {
+//     let answer = [];
+//     cid = cid.reverse();
+
+//     let currencyUnit = {
+//       'ONE HUNDRED': 10000,
+//       TWENTY: 2000,
+//       TEN: 1000,
+//       FIVE: 500,
+//       ONE: 100,
+//       QUARTER: 25,
+//       DIME: 10,
+//       NICKEL: 5,
+//       PENNY: 1,
+//     };
+//     for (let changeType of cid) {
+//       let drawArr = [changeType[0], 0];
+//       changeType[1] = changeType[1] * 100;
+//       while (change >= currencyUnit[changeType[0]]) {
+//         change -= currencyUnit[changeType[0]];
+//         changeType[1] -= currencyUnit[changeType[0]];
+//         drawArr[1] += currencyUnit[changeType[0]] / 100;
+//       }
+//       if (drawArr[1] > 0) {
+//         answer.push(drawArr);
+//       }
+//     }
+//     if (change > 0) {
+//       return { status: 'INSUFFICIENT_FUNDS', change: [] };
+//     }
+//     return { status: 'OPEN', change: answer };
+//   }
+// }
+
+// checkCashRegister(19.5, 20, [
+//   ['PENNY', 1.01],
+//   ['NICKEL', 2.05],
+//   ['DIME', 3.1],
+//   ['QUARTER', 4.25],
+//   ['ONE', 90],
+//   ['FIVE', 55],
+//   ['TEN', 20],
+//   ['TWENTY', 60],
+//   ['ONE HUNDRED', 100],
+// ]);
+
+// let currencyUnit = {
+//   'ONE HUNDRED': 10000,
+//   TWENTY: 2000,
+//   TEN: 1000,
+//   FIVE: 500,
+//   ONE: 100,
+//   QUARTER: 25,
+//   DIME: 10,
+//   NICKEL: 5,
+//   PENNY: 1,
+// };
+
+const currencyUnit = {
+  PENNY: 1,
+  NICKEL: 5,
+  DIME: 10,
+  QUARTER: 25,
+  ONE: 100,
+  FIVE: 500,
+  TEN: 1000,
+  TWENTY: 2000,
+  'ONE HUNDRED': 10000,
+};
+
+function checkCashRegister(price, cash, cid) {
+  let changeTotal = cash * 100 - price * 100;
+  let changeTotalCheck = changeTotal;
+
+  let change = [];
+  let status = '';
+
+  let cidSum = 0;
+  let filteredCid = cid.filter((elem) => elem[1] !== 0).reverse();
+
+  filteredCid.forEach((elem) => {
+    let curr = elem[0];
+    let currSum = elem[1] * 100;
+    cidSum += currSum;
+    let amount = 0;
+    while (changeTotal >= currencyUnit[curr] && currSum > 0) {
+      amount += currencyUnit[curr];
+      changeTotal -= currencyUnit[curr];
+      currSum -= currencyUnit[curr];
+    }
+    if (amount !== 0) {
+      change.push([curr, amount / 100]);
+    }
+  });
+
+  if (changeTotal > 0) {
+    status = 'INSUFFICIENT_FUNDS';
+    change = [];
+  } else if (changeTotal == 0 && changeTotalCheck == cidSum) {
+    status = 'CLOSED';
+    change = cid;
+  } else {
+    status = 'OPEN';
+  }
+  return { status: status, change: change };
+}
